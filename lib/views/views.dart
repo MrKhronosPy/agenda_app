@@ -1,0 +1,1 @@
+export 'package:agenda_app/views/map_view.dart';

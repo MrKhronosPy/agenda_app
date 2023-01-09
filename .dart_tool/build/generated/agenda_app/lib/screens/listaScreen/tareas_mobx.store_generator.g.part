@@ -1,0 +1,110 @@
+// **************************************************************************
+// StoreGenerator
+// **************************************************************************
+
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
+
+mixin _$Listatareas on _Listatareas, Store {
+  Computed<ObservableList<Tarea?>?>? _$visibleTodosComputed;
+
+  @override
+  ObservableList<Tarea?>? get visibleTodos => (_$visibleTodosComputed ??=
+          Computed<ObservableList<Tarea?>?>(() => super.visibleTodos,
+              name: '_Listatareas.visibleTodos'))
+      .value;
+  Computed<bool>? _$hasResultsComputed;
+
+  @override
+  bool get hasResults =>
+      (_$hasResultsComputed ??= Computed<bool>(() => super.hasResults,
+              name: '_Listatareas.hasResults'))
+          .value;
+
+  late final _$tareasAtom = Atom(name: '_Listatareas.tareas', context: context);
+
+  @override
+  ObservableList<Tarea?>? get tareas {
+    _$tareasAtom.reportRead();
+    return super.tareas;
+  }
+
+  @override
+  set tareas(ObservableList<Tarea?>? value) {
+    _$tareasAtom.reportWrite(value, super.tareas, () {
+      super.tareas = value;
+    });
+  }
+
+  late final _$fetchTodosFutureAtom =
+      Atom(name: '_Listatareas.fetchTodosFuture', context: context);
+
+  @override
+  ObservableFuture<List<Tarea?>?>? get fetchTodosFuture {
+    _$fetchTodosFutureAtom.reportRead();
+    return super.fetchTodosFuture;
+  }
+
+  @override
+  set fetchTodosFuture(ObservableFuture<List<Tarea?>?>? value) {
+    _$fetchTodosFutureAtom.reportWrite(value, super.fetchTodosFuture, () {
+      super.fetchTodosFuture = value;
+    });
+  }
+
+  late final _$cantidadTareasAtom =
+      Atom(name: '_Listatareas.cantidadTareas', context: context);
+
+  @override
+  int get cantidadTareas {
+    _$cantidadTareasAtom.reportRead();
+    return super.cantidadTareas;
+  }
+
+  @override
+  set cantidadTareas(int value) {
+    _$cantidadTareasAtom.reportWrite(value, super.cantidadTareas, () {
+      super.cantidadTareas = value;
+    });
+  }
+
+  late final _$fetchTodosAsyncAction =
+      AsyncAction('_Listatareas.fetchTodos', context: context);
+
+  @override
+  Future<List<Tarea?>?> fetchTodos() {
+    return _$fetchTodosAsyncAction.run(() => super.fetchTodos());
+  }
+
+  late final _$eliminarTareaAsyncAction =
+      AsyncAction('_Listatareas.eliminarTarea', context: context);
+
+  @override
+  Future<dynamic> eliminarTarea(Tarea tarea) {
+    return _$eliminarTareaAsyncAction.run(() => super.eliminarTarea(tarea));
+  }
+
+  late final _$_ListatareasActionController =
+      ActionController(name: '_Listatareas', context: context);
+
+  @override
+  dynamic recargar() {
+    final _$actionInfo = _$_ListatareasActionController.startAction(
+        name: '_Listatareas.recargar');
+    try {
+      return super.recargar();
+    } finally {
+      _$_ListatareasActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String toString() {
+    return '''
+tareas: ${tareas},
+fetchTodosFuture: ${fetchTodosFuture},
+cantidadTareas: ${cantidadTareas},
+visibleTodos: ${visibleTodos},
+hasResults: ${hasResults}
+    ''';
+  }
+}
