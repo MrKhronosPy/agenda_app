@@ -1,0 +1,1 @@
+export 'package:agenda_app/delegates/search_destination_delegate.dart';

@@ -7,9 +7,12 @@ class MapView extends StatefulWidget {
 
   final LatLng initialLocation;
 
+  final Set<Polyline> polylines;
+
   const MapView({
     super.key, 
-    required this.initialLocation
+    required this.initialLocation, 
+    required this.polylines
   });
 
   @override
@@ -32,15 +35,19 @@ class _MapViewState extends State<MapView> {
     return SizedBox(
       width: size.width,
       height: size.height,
-      child: GoogleMap(
-        initialCameraPosition: initialCameraPosition,
-        mapType: MapType.hybrid, //da problemas en el emulador el hibrido
-        myLocationEnabled: true,
-        zoomControlsEnabled: false,
-        myLocationButtonEnabled: false,
-        onMapCreated: (GoogleMapController controller) {
-          mapBloc.add(OnMapInitializedEvent(controller));
-        },
+      child: Listener(
+        onPointerMove: (pointerMoveEvent) => mapBloc.add(OnStopFollowingUserEvent()),
+        child: GoogleMap(
+          initialCameraPosition: initialCameraPosition,
+          mapType: MapType.hybrid, //da problemas en el emulador el hibrido
+          myLocationEnabled: true,
+          zoomControlsEnabled: false,
+          myLocationButtonEnabled: false,
+          polylines: widget.polylines,
+          onMapCreated: (GoogleMapController controller) {
+            mapBloc.add(OnMapInitializedEvent(controller));
+          },
+        ),
       ),
     );
   }

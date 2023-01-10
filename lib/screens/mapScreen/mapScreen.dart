@@ -3,6 +3,7 @@ import 'package:agenda_app/views/views.dart';
 import 'package:agenda_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -39,16 +40,33 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<LocationBloc, LocationState>(
-        builder: (context, state) {
+        builder: (context, locationState) {
 
-          if(state.lastKnowLocation == null) return const Center(child: Text('Espere por favor....'),);
+          if(locationState.lastKnowLocation == null) return const Center(child: Text('Espere por favor....'),);
 
-          return SingleChildScrollView(
-            child: Stack(
-              children: [
-                MapView(initialLocation: state.lastKnowLocation!),
-              ],
-            ),
+          return BlocBuilder<MapBloc, MapState>(
+            builder: (context, mapState) {
+
+              Map<String,Polyline> polylines = Map.from(mapState.polylines);
+
+              if(!mapState.showMyRoute){
+                polylines.removeWhere((key, value) => key == 'myRoute');
+              }
+
+              return SingleChildScrollView(
+                      child: Stack(
+                        children: [
+                          MapView(
+                            initialLocation: locationState.lastKnowLocation!,
+                            polylines: polylines.values.toSet(),
+                          ),
+
+                          const SearchBar(),
+
+                        ],
+                      ),
+                    );
+            },
           );
         },
       ),
@@ -56,6 +74,8 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: const [
+          BtnToggleUserRoute(),
+          BtnFollowUser(),
           BtnCurrentLocation(),
         ],
       ),
